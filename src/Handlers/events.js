@@ -9,7 +9,7 @@ class EventHandler {
         console.log('[HANDLER] => CARREGANDO EVENTOS:');
 
         fs.readdirSync('./src/Events').forEach(subfolder => {
-            fs.readdirSync(`/src/Events/${subfolder}`)
+            fs.readdirSync(`./src/Events/${subfolder}`)
             .filter(file => file.endsWith('.js'))
             .forEach(file => {
                 try {
