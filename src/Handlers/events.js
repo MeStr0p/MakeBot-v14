@@ -14,12 +14,12 @@ class EventHandler {
         fs.readdirSync(eventsPath).forEach(subfolder => {
 
             const eventsPathWithSub = path.join(__dirname, '..', 'Events', subfolder);
-            
+
             fs.readdirSync(eventsPathWithSub)
             .filter(file => file.endsWith('.js'))
             .forEach(file => {
                 try {
-                    const event = new (require(`../events/${subfolder}/${file}`));
+                    const event = new (require(`../Events/${subfolder}/${file}`));
 
                     event.once ? 
                     this.client.once(event.EventName,  (...args) => event.execute(...args, this.client)) : 
