@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 class EventHandler {
     constructor(client) {
@@ -8,8 +9,10 @@ class EventHandler {
     laod() {
         console.log('[HANDLER] => CARREGANDO EVENTOS:');
 
-        fs.readdirSync(__dirname, '..', 'Events').forEach(subfolder => {
-            fs.readdirSync(__dirname, '..', 'Events', subfolder)
+        const eventsPath = path.join(__dirname, '..', 'Events');
+
+        fs.readdirSync(eventsPath).forEach(subfolder => {
+            fs.readdirSync(eventsPath, subfolder)
             .filter(file => file.endsWith('.js'))
             .forEach(file => {
                 try {
