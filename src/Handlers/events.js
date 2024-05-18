@@ -12,7 +12,10 @@ class EventHandler {
         const eventsPath = path.join(__dirname, '..', 'Events');
 
         fs.readdirSync(eventsPath).forEach(subfolder => {
-            fs.readdirSync(eventsPath, subfolder)
+
+            const eventsPathWithSub = path.join(__dirname, '..', 'Events', subfolder);
+            
+            fs.readdirSync(eventsPathWithSub)
             .filter(file => file.endsWith('.js'))
             .forEach(file => {
                 try {
