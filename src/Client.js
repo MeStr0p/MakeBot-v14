@@ -9,8 +9,10 @@ const path = require('path');
 
 const {
     ComamnadHandler, 
-    EventHandler 
+    EventHandler,
+    ComponentInteraction 
 } = require('./Handlers/index');
+
 const Database = require('./Database/Database');
 
 class ClientExtends extends Client {
@@ -42,17 +44,16 @@ class ClientExtends extends Client {
         });
 
         this.SlashCommands = new Collection();
-        this.database = {
-            local:  new Database(path.join(__dirname, 'Database','Files','database.json')),
-        }
+        this.Component;
+        this.CollectionComponent = new Collection();
     }
 
     async login() {
         await super.login(process.env.TOKEN);
 
-        new EventHandler(this).laod();
-        await this.sleep(6000);
+        new EventHandler(this).laod();        
         new ComamnadHandler(this).slashCommand();
+        this.Component = new ComponentInteraction(this);
     }
 
     sleep(time) {

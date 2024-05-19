@@ -16,6 +16,10 @@ class EventInteraction {
     }
 
     async execute(interaction, client) {
+        if (interaction.isMessageComponent()) {
+           client.Component.onComponent(interaction)
+        }
+
         if (!interaction.isButton()) return;
 
         if (interaction.customId === "ticketCreate") {
@@ -82,7 +86,7 @@ class EventInteraction {
 
                 const btnDelete = new ButtonBuilder()
                     .setLabel(`Deleta`)
-                    .setCustomId(`Delete?${channel.id}`)
+                    .setCustomId(`ticket/delete/${channel.id}`)
                     .setStyle(4);
 
                 const Menu = new StringSelectMenuBuilder()
@@ -133,6 +137,8 @@ class EventInteraction {
 
                     const selection = i.values[0];
                     let embed;
+                    let button;
+                    let row;
 
                     switch (selection) {
                         case 'cost_of_bot':
@@ -141,6 +147,18 @@ class EventInteraction {
                                 .setThumbnail(interaction.guild.iconURL())
                                 .setTitle('Custo de um Bot')
                                 .setDescription('\`\`\`O custo de um bot depende de vários fatores, incluindo complexidade, recursos e tempo de desenvolvimento.\`\`\`');
+
+                                
+
+                                button = new ButtonBuilder()
+                                .setCustomId(`ticket/delete/${channel.id}`)
+                                .setStyle(2)
+                                .setLabel('click')
+
+                                row = new ActionRowBuilder()
+                                .addComponents(button)
+                                
+
                             break;
                         case 'setup_bot':
                             embed = new EmbedBuilder()
@@ -171,18 +189,12 @@ class EventInteraction {
                             break;
                     }
             
-                    await i.update({ embeds: [embed] });
+                    await i.update({ embeds: [embed], components: [row] });
                 });
 
             });
 
 
-        } else if (interaction.customId.startsWith('Delete')) {
-            let id = interaction.customId.split('?');
-            id = id[1];
-
-            const channel = interaction.guild.channels.cache.get(id);
-            await channel.delete();
         }
     }
 }
