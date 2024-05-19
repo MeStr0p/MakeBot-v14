@@ -1,21 +1,21 @@
 const fs = require('fs');
 const ComponentBaseInteraction = require('../Structurs/ComponentBase');
 const { Collection, ComponentType } = require("discord.js");
-const {getCustomIdParams} = require('../Structurs/utils/Params');
+const { getCustomIdParams } = require('../Structurs/utils/Params');
 
 class EventHandler {
     constructor(client) {
         this.client = client;
         this.Component = client.CollectionComponent;
-        
-        this.laod();
+
+        this.execute();
     };
 
-    onComponent(interaction) {
+    InitInteraction(interaction) {
         const { customId, componentType } = interaction;
 
         const components = this.Component.get(componentType) ?? this.Component.get(ComponentType.ActionRow);
-        
+
 
         const find = (components, type) => {
             if (!components) return;
@@ -40,46 +40,40 @@ class EventHandler {
         find(components, componentType);
     }
 
-    laod() {
-        console.log('[HANDLER] => CARREGANDO BTN INTERACITONS:');
+    execute() {
+        console.log('[handler] => starting a button interactions'.toLowerCase());
 
         fs.readdirSync('./src/Components').forEach(subfolder => {
             fs.readdirSync(`./src/Components/${subfolder}`)
-            .filter(file => file.endsWith('.js'))
-            .forEach(file => {
-                try {
-                    const ComponentInteraction = require(`../Components/${subfolder}/${file}`);
+                .filter(file => file.endsWith('.js'))
+                .forEach(file => {
+                    try {
+                        const ComponentInteraction = require(`../Components/${subfolder}/${file}`);
 
-                    if(!(ComponentInteraction.prototype instanceof ComponentBaseInteraction)) return;
+                        if (!(ComponentInteraction.prototype instanceof ComponentBaseInteraction)) return;
 
-                    const ComponentData = new ComponentInteraction(this.client);
-                    
-                    const components = this.Component.get(ComponentData.type) ?? new Collection();
-                    components.set(ComponentData.customId, ComponentData);
-                    this.Component.set(ComponentData.type, ComponentData);
+                        const ComponentData = new ComponentInteraction(this.client);
 
-                    
+                        let components = this.Component.get(ComponentData.type);
+                        if (!components) {
+                            this.Component.set(ComponentData.type, components);
+                        }
 
-                    
-                } catch(err) {
-                    console.log(err);
-                }
-               
-            });
+                        this.Component.set(ComponentData.customId, ComponentData);
+
+
+
+
+                    } catch (err) {
+                        console.log(err);
+                    }
+
+                });
         });
 
-        this.client.sleep(5000).then(() => this.logs());
-        
+        this.client.await(5000).then(() => {});
+
     };
-
-    logs() {
-        const names = new Map(Object.entries(ComponentType).map(([key, value]) => [+key, value]));
-
-        for (const components of this.Component.values()) {
-            const { customId, type } = components;
-            console.log(`Custom ID: ${customId}, Type: ${type}`);
-        }
-    }
 }
 
 module.exports = EventHandler;

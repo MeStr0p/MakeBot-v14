@@ -45,7 +45,7 @@ class CommandHandler {
             });
         });
 
-        await this.client.sleep(6000);
+        await this.client.await(6000);
         this.RegsitryCommands()
     };
 

@@ -5,15 +5,11 @@ const {
     Collection
 } = require('discord.js');
 require('dotenv').config();
-const path = require('path');
-
 const {
     ComamnadHandler, 
     EventHandler,
     ComponentInteraction 
 } = require('./Handlers/index');
-
-const Database = require('./Database/Database');
 
 class ClientExtends extends Client {
     constructor() {
@@ -46,6 +42,8 @@ class ClientExtends extends Client {
         this.SlashCommands = new Collection();
         this.Component;
         this.CollectionComponent = new Collection();
+
+        this.owner = ['']
     }
 
     async login() {
@@ -56,7 +54,7 @@ class ClientExtends extends Client {
         this.Component = new ComponentInteraction(this);
     }
 
-    sleep(time) {
+    await(time) {
         return new Promise((resolve) => {
             setTimeout(resolve, time)
           });

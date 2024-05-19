@@ -17,7 +17,7 @@ class EventInteraction {
 
     async execute(interaction, client) {
         if (interaction.isMessageComponent()) {
-           client.Component.onComponent(interaction)
+           client.Component.InitInteraction(interaction)
         }
 
         if (!interaction.isButton()) return;

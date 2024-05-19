@@ -4,10 +4,10 @@ const {
 } = require("discord.js");
 const ComponentBaseInteraction = require('../../Structurs/ComponentBase')
 
-class ButtonDelete extends ComponentBaseInteraction {
+class ButtonCreate extends ComponentBaseInteraction {
     constructor(client) {
         super(client, {
-            customId: 'ticket/delete/:id',
+            customId: 'ticket/create',
             type: ComponentType.Button,
         });
     }
@@ -18,4 +18,4 @@ class ButtonDelete extends ComponentBaseInteraction {
     }
 }
 
-module.exports = ButtonDelete;
+module.exports = ButtonCreate;
