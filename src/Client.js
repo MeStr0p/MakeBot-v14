@@ -59,12 +59,11 @@ class ClientExtends extends Client {
             const Handler = require(`./Handlers/${handler}`);
             
             if(!(Handler.prototype instanceof EventHandlersBase)) return;
+            console.log(handler)
 
             const newHandler = new Handler(this);
 
             newHandler.execute();
-            
-
         })
     }
 

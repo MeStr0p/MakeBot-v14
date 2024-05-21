@@ -3,13 +3,20 @@ const CommandBase = require('../Structurs/CommandBase');
 const { REST, Routes } = require('discord.js');
 require('dotenv').config();
 
-class CommandHandler {
+const CommandHandlerBase = require("../Structurs/CommandHander");
+
+class CommandHandler extends CommandHandlerBase {
     constructor(client) {
+        super(client);
         this.client = client;
     };
 
+    async execute() {
+        this.slashCommand()
+    }
+
     async slashCommand() {
-        console.log('[HANDLER] => CARREGADO COMMANDOS SLASH');
+        console.log('[HANDLER] -> loading commands');
 
         fs.readdirSync('./src/Commands/Slash').forEach(subfolder => {
             fs.readdirSync(`./src/Commands/Slash/${subfolder}`)
@@ -29,7 +36,6 @@ class CommandHandler {
 						description: cmdData.description,
 						options: cmdData.options,
 						defaultPermission: cmdData.default_permission,
-						contextDescription: cmd.contextDescription,
 						usage: cmd.usage,
 						category: cmd.category,
 						permissions: cmd.permissions,

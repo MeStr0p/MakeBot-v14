@@ -11,7 +11,7 @@ class EventInteraction extends EventBase {
 
         if (!interaction.inGuild() && interaction.type === InteractionType.ApplicationCommand) return interaction.reply({ content: 'You must be in a server to use commands.' });
 
-        if (!cmd) return client.SlashCommands.delete(interaction.commandName);
+        if (!cmd) return interaction.reply({content: `${interaction.user} this command is not available`, ephemeral: true}) && client.SlashCommands.delete(interaction.commandName);
 
 
         try {
@@ -19,7 +19,7 @@ class EventInteraction extends EventBase {
         }
         catch (e) {
             console.log(e);
-            return interaction.reply({ content: `Erro:\`\`\`${e.message}\`\`\`` });
+            return interaction.reply({ content: `an internal error occurred` });
         }
 
     }
