@@ -2,9 +2,9 @@ const {
     ComponentType, 
     Component 
 } = require("discord.js");
-const ComponentBaseInteraction = require('../../Structurs/ComponentBase')
+const ComponentBaseInteraction = require('../../../Structurs/ComponentBase')
 
-class ButtonDelete extends ComponentBaseInteraction {
+class ButtonInteraction extends ComponentBaseInteraction {
     constructor(client) {
         super(client, {
             customId: 'ticket/delete/:id',
@@ -14,8 +14,12 @@ class ButtonDelete extends ComponentBaseInteraction {
 
     async run(interaction, params) {
         const channel = interaction.guild.channels.cache.get(params.id);
+
         channel.delete()
+        .then()
+        .catch()
+       
     }
 }
 
-module.exports = ButtonDelete;
+module.exports = ButtonInteraction;

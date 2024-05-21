@@ -1,11 +1,9 @@
-const { InteractionType } = require('discord.js')
-class EventInteraction {
-    constructor() {
-        this.EventName = "interactionCreate"
-        this.once = false
-    }
+const { InteractionType } = require('discord.js');
+const EventBase = require('../../Structurs/EventBase');
 
-    execute(interaction, client) {
+class EventInteraction extends EventBase {
+
+    async run(interaction, client) {
         if (interaction.type != InteractionType.ApplicationCommand) return;
 
         const cmd = client.SlashCommands.get(interaction.commandName);
@@ -13,10 +11,7 @@ class EventInteraction {
 
         if (!interaction.inGuild() && interaction.type === InteractionType.ApplicationCommand) return interaction.reply({ content: 'You must be in a server to use commands.' });
 
-        if (!cmd) return interaction.reply({
-            content: 'This command is unavailable. *Check back later.*',
-            ephemeral: true
-        }) && client.SlashCommands.delete(interaction.commandName);
+        if (!cmd) return client.SlashCommands.delete(interaction.commandName);
 
 
         try {
@@ -24,7 +19,7 @@ class EventInteraction {
         }
         catch (e) {
             console.log(e);
-            return interaction.reply({ content: `An error has occurred.\n\n**\`${e.message}\`**` });
+            return interaction.reply({ content: `Erro:\`\`\`${e.message}\`\`\`` });
         }
 
     }

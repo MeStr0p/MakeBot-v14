@@ -43,7 +43,7 @@ module.exports = class Hello extends Command {
         .setFooter({text: interaction.guild.name, iconURL: interaction.guild.iconURL()});
 
         const button = new ButtonBuilder()
-        .setCustomId('ticketCreate')
+        .setCustomId('ticket/Create')
         .setLabel('Abrir Ticket')
         .setStyle(2)
         .setEmoji('🎟️');

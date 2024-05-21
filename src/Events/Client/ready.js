@@ -1,11 +1,8 @@
-class EventReady {
-    constructor() {
-        this.EventName = "ready"
-        this.once = false
-    }
+const EventBase = require('../../Structurs/EventBase');
 
-    execute(client) {
-        console.log(client.user.username);
+class EventReady extends EventBase {
+    async run(client) {
+        console.log(`the bot is online`);
     }
 }
 

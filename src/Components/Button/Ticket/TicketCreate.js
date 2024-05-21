@@ -1,4 +1,6 @@
-const {
+const { 
+    ComponentType, 
+    Component,
     InteractionType,
     ChannelType,
     PermissionsBitField,
@@ -6,23 +8,19 @@ const {
     ButtonBuilder,
     ActionRowBuilder,
     StringSelectMenuBuilder,
-    ComponentType
-} = require('discord.js');
+} = require("discord.js");
+;
+const ComponentBaseInteraction = require('../../../Structurs/ComponentBase')
 
-class EventInteraction {
-    constructor() {
-        this.EventName = "interactionCreate"
-        this.once = false
+class ButtonInteraction extends ComponentBaseInteraction {
+    constructor(client) {
+        super(client, {
+            customId: 'ticket/Create',
+            type: ComponentType.Button,
+        });
     }
 
-    async execute(interaction, client) {
-        if (interaction.isMessageComponent()) {
-           client.Component.InitInteraction(interaction)
-        }
-
-        if (!interaction.isButton()) return;
-
-        if (interaction.customId === "ticketCreate") {
+    async run(interaction, params) {
             const verificar = interaction.guild.channels.cache.find(e => e.topic == interaction.user.id);
 
             if (verificar) {
@@ -87,7 +85,7 @@ class EventInteraction {
                 const btnDelete = new ButtonBuilder()
                     .setLabel(`Deleta`)
                     .setCustomId(`ticket/delete/${channel.id}`)
-                    .setStyle(4);
+                    .setStyle(2);
 
                 const Menu = new StringSelectMenuBuilder()
                     .setCustomId(`ChoicesTicket?${channel.id}`)
@@ -116,19 +114,31 @@ class EventInteraction {
                             description: 'Perguntas e respostas gerais',
                             emoji: '❓',
                             value: 'general_questions'
-                        }
+                        },
+                        {
+                            label: 'Delete Channel',
+                            description: 'fechar ticket',
+                            emoji: '🛠️',
+                            value: 'delete_ticket'
+                        },
                     )
 
-                const Btnrow = new ActionRowBuilder()
+                let Btnrow = new ActionRowBuilder()
                 .addComponents(btnDelete)
-                const Selectrow = new ActionRowBuilder()
+                let Selectrow = new ActionRowBuilder()
                 .addComponents(Menu)
 
-                await channel.send({
+                const amsg = await channel.send({
                     content: `${interaction.user}`,
                     embeds: [Embed],
                     components: [Selectrow, Btnrow]
                 });
+
+                amsg.components.forEach(element => {
+                    console.log(element.components)
+                });
+
+                console.log()
 
                 const collector = channel.createMessageComponentCollector({ componentType: ComponentType.StringSelect, time: 3_600_000 });
 
@@ -137,8 +147,11 @@ class EventInteraction {
 
                     const selection = i.values[0];
                     let embed;
-                    let button;
-                    let row;
+                    let butt
+                    let components;
+
+                    let deleteChanel = false;
+                    
 
                     switch (selection) {
                         case 'cost_of_bot':
@@ -150,15 +163,15 @@ class EventInteraction {
 
                                 
 
-                                button = new ButtonBuilder()
-                                .setCustomId(`ticket/delete/${channel.id}`)
+                                butt = new ButtonBuilder()
+                                .setCustomId(`request/quetod/${channel.id}/${interaction.user.id}`)
                                 .setStyle(2)
                                 .setLabel('click')
 
-                                row = new ActionRowBuilder()
-                                .addComponents(button)
-                                
+                                let row = new ActionRowBuilder()
+                                .addComponents(btnDelete, butt)
 
+                                components = [Selectrow, row]
                             break;
                         case 'setup_bot':
                             embed = new EmbedBuilder()
@@ -181,6 +194,12 @@ class EventInteraction {
                                 .setTitle('Dúvidas Gerais')
                                 .setDescription('\`\`\`Fale sua duvida e espere uma reposta de algum Atendente.\`\`\`');
                             break;
+                            case "delete_ticket":
+                                await channel.delete().then(() => {
+                                    deleteChanel = true;
+                                }).catch()
+
+                                break; 
                         default:
                             embed = new EmbedBuilder()
                                 .setColor(0x0099ff)
@@ -188,15 +207,12 @@ class EventInteraction {
                                 .setDescription('\`\`\`Selecione uma opção válida do menu.\`\`\`');
                             break;
                     }
-            
-                    await i.update({ embeds: [embed], components: [row] });
+
+                    deleteChanel ?? await i.update({ embeds: [embed], components });
+                    
                 });
-
             });
-
-
-        }
     }
 }
 
-module.exports = EventInteraction;
+module.exports = ButtonInteraction;

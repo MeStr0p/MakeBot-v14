@@ -3,7 +3,7 @@ const ComponentBaseInteraction = require('../Structurs/ComponentBase');
 const { Collection, ComponentType } = require("discord.js");
 const { getCustomIdParams } = require('../Structurs/utils/Params');
 
-class EventHandler {
+class COmponettHandler {
     constructor(client) {
         this.client = client;
         this.Component = client.CollectionComponent;
@@ -21,7 +21,7 @@ class EventHandler {
             if (!components) return;
 
             if (this.Component.has(customId)) {
-                const component = this.Component.has(customId);
+                const component = this.Component.get(customId);
                 component.run(interaction, null);
                 return;
             }
@@ -43,26 +43,19 @@ class EventHandler {
     execute() {
         console.log('[handler] => starting a button interactions'.toLowerCase());
 
-        fs.readdirSync('./src/Components').forEach(subfolder => {
-            fs.readdirSync(`./src/Components/${subfolder}`)
+        fs.readdirSync('./src/Components/Button').forEach(subfolder => {
+            fs.readdirSync(`./src/Components/Button/${subfolder}`)
                 .filter(file => file.endsWith('.js'))
                 .forEach(file => {
                     try {
-                        const ComponentInteraction = require(`../Components/${subfolder}/${file}`);
+                        const ComponentInteraction = require(`../Components/Button/${subfolder}/${file}`);
 
                         if (!(ComponentInteraction.prototype instanceof ComponentBaseInteraction)) return;
 
                         const ComponentData = new ComponentInteraction(this.client);
 
-                        let components = this.Component.get(ComponentData.type);
-                        if (!components) {
-                            this.Component.set(ComponentData.type, components);
-                        }
-
+                        this.Component.set(ComponentData.type, ComponentData);
                         this.Component.set(ComponentData.customId, ComponentData);
-
-
-
 
                     } catch (err) {
                         console.log(err);
@@ -71,9 +64,18 @@ class EventHandler {
                 });
         });
 
-        this.client.await(5000).then(() => {});
+        this.client.await(5000).then(() => {
+            
+        });
 
     };
+
+    logs() {
+        for (const components of this.Component.values()) {
+            console.log(components)
+
+        }
+    }
 }
 
-module.exports = EventHandler;
+module.exports = COmponettHandler;
