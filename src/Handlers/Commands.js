@@ -3,9 +3,9 @@ const CommandBase = require('../Structurs/CommandBase');
 const { REST, Routes } = require('discord.js');
 require('dotenv').config();
 
-const CommandHandlerBase = require("../Structurs/CommandHander");
+const HandlerBase = require("../Structurs/HanderBase");
 
-class CommandHandler extends CommandHandlerBase {
+class CommandHandler extends HandlerBase {
     constructor(client) {
         super(client);
         this.client = client;

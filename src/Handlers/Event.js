@@ -1,8 +1,8 @@
 const fs = require('fs');
 const EventBase = require('../Structurs/EventBase');
-const EventHandlersBase = require('../Structurs/EventHandlers');
+const HandlerBase = require("../Structurs/HanderBase");
 
-class EventHandler extends EventHandlersBase {
+class EventHandler extends HandlerBase {
     constructor(client) {
         super(client);
         this.client = client;

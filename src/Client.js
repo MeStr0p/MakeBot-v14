@@ -7,7 +7,7 @@ const {
 require('dotenv').config();
 const path = require('path')
 const fs = require('fs');
-const EventHandlersBase  = require('./Structurs/EventHandlers');
+const HandlerBase  = require('./Structurs/HanderBase');
 
 class ClientExtends extends Client {
     constructor() {
@@ -61,7 +61,7 @@ class ClientExtends extends Client {
         }).filter(file => file.name.endsWith(".js")).forEach(file => {
             const Handler = require(`./Handlers/${file.name}`);
             
-            if(!(Handler.prototype instanceof EventHandlersBase)) return;
+            if(!(Handler.prototype instanceof HandlerBase)) return;
 
 
             const newHandler = new Handler(this);
