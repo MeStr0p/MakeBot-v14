@@ -5,6 +5,7 @@ const {
     Collection
 } = require('discord.js');
 require('dotenv').config();
+const path = require('path')
 const fs = require('fs');
 const EventHandlersBase  = require('./Structurs/EventHandlers');
 
@@ -53,18 +54,21 @@ class ClientExtends extends Client {
 
 
     async LoadAllHandlers() {
-        fs.readdirSync('./src/Handlers')
-        .filter(file => file.endsWith('.js'))
-        .forEach(handler => {
-            const Handler = require(`./Handlers/${handler}`);
+        const handlersPath = path.join(__dirname, 'Handlers');
+
+        fs.readdirSync(handlersPath, {
+            withFileTypes: true
+        }).filter(file => file.name.endsWith(".js")).forEach(file => {
+            const Handler = require(`./Handlers/${file.name}`);
             
             if(!(Handler.prototype instanceof EventHandlersBase)) return;
-            console.log(handler)
+
 
             const newHandler = new Handler(this);
 
             newHandler.execute();
         })
+
     }
 
     await(time) {
