@@ -6,18 +6,18 @@ module.exports = class Hello extends Command {
 	constructor(client) {
 		super(client, {
 			data: {
-                name: 'pingtest',
+                name: 'ping',
                 description: 'ver latencia',
                 type: 1,
                 options: []
             },
-			contextDescription: 'Sends a message that greets you, with a present!',
+	
 			usage: 'Hello',
 			category: 'Context',
-			permissions: ['Use Application Commands', 'Send Messages', 'Embed Links'],
+			permissions: ['Use Application Commands', 'Send Messages'],
 		});
 	}
 	async run(interaction, client) {
-		await interaction.reply({ content: `Hello ${interaction.user}! Here, you should have a slice of vanilla cake 😊🍰\n\nMessage ID: ${interaction.targetId}` });
+		await interaction.reply({ content: `ping > ${client.ws.ping}` });
 	}
 };

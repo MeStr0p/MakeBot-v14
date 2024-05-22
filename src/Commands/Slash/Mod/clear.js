@@ -20,10 +20,9 @@ module.exports = class Hello extends Command {
                     }
                 ]
             },
-			contextDescription: 'Sends a message that greets you, with a present!',
 			usage: 'Hello',
 			category: 'Context',
-			permissions: ['Use Application Commands', 'Send Messages', 'Embed Links'],
+			permissions: ['Use Application Commands', 'Send Messages'],
 		});
 	}
 	async run(interaction, client) {
