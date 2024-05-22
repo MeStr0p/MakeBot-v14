@@ -1,7 +1,6 @@
 const fs = require('fs');
 const ComponentBaseInteraction = require('../Structurs/ComponentBase');
 const { Collection, ComponentType } = require("discord.js");
-const { getCustomIdParams } = require('../Structurs/utils/Params');
 
 class COmponettHandler {
     constructor(client) {
