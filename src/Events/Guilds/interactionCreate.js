@@ -14,7 +14,7 @@ const EventBase = require('../../Structurs/EventBase');
 class EventInteraction extends EventBase{
     async run(interaction, client) {
         if (interaction.isMessageComponent()) {
-           client.Component.InitInteraction(interaction)
+         
         }
     }
 }
