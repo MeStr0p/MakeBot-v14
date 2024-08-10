@@ -14,7 +14,7 @@ Este é um bot para Discord desenvolvido em JavaScript utilizando Programação 
 1. Clone o repositório:
 
     ```bash
-    git clone https://github.com/seu-usuario/seu-repositorio](https://github.com/geds0n/MakeBot.git
+    git clone https://github.com/seu-usuario/seu-repositorio](https://github.com/MeStr0p/MakeBot-v14.git)
     cd MakeBot
     ```
 
